@@ -65,8 +65,8 @@ DISCORD_WEBHOOK_URL=<your-discord-webhook-url>
 SLACK_WEBHOOK_URL=<your-slack-webhook-url>
 
 # Optional Extensions to Grafana
-# Comma separated list of URLs to GitHub plugins to install. See [grafana/entrypoint.sh](./grafana/entrypoint.sh) for details
-# GF_GITHUB_PLUGINS=
+# Comma separated list of Grafana plugins to install before start, as `id@version`, e.g. `yesoreyeram-infinity-datasource@4.1.3,grafana-clock-panel@2.1.8`. Defaults to the Infinity datasource
+# GF_PLUGINS_PREINSTALL_SYNC=
 # Extended Grafana configuration file
 # GRAFANA_ENV_FILE=.grafana.env
 ```
@@ -85,7 +85,6 @@ In your `.env` file, set `GRAFANA_ENV_FILE=.grafana.env` so that Compose loads i
 
 Refer to the [Grafana configuration documentation](https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#override-configuration-with-environment-variables) for details.
 
-
 ### **4. Start the Services**
 
 ```bash
@@ -94,8 +93,8 @@ docker compose up -d
 
 This will deploy the containers for **Grafana**, **Prometheus**, and **Alertmanager**.
 
-- **Grafana**: [http://localhost:3000](http://localhost:3000)  
-- **Prometheus**: [http://localhost:9090](http://localhost:9090)  
+- **Grafana**: [http://localhost:3000](http://localhost:3000)
+- **Prometheus**: [http://localhost:9090](http://localhost:9090)
 - **Alertmanager**: [http://localhost:9093](http://localhost:9093)
 
 ### **5. Verify Services**
@@ -112,20 +111,20 @@ docker compose logs <service_name>
 
 ### **Grafana Dashboards**
 
-1. **Walrus Storage Node Dashboard**  
+1. **Walrus Storage Node Dashboard**
    - **Description**: Insights into the performance and status of the Walrus Storage Node, including storage usage, retrieval rates, and latency.
-   - **Dashboard File**: [walrus_storage_node.json](./grafana/dashboards/walrus_storage_node.json)  
-   ![Walrus Storage Node Dashboard](./assets/walrus_storage_node.png)
+   - **Dashboard File**: [walrus_storage_node.json](./grafana/dashboards/walrus_storage_node.json)
+     ![Walrus Storage Node Dashboard](./assets/walrus_storage_node.png)
 
-2. **Walrus Aggregator Dashboard**  
+2. **Walrus Aggregator Dashboard**
    - **Description**: Tracks Aggregator performance metrics such as blob reconstruction rates and operational health.
-   - **Dashboard File**: [walrus_aggregator.json](./grafana/dashboards/walrus_aggregator.json)  
-   ![Walrus Aggregator Dashboard](./assets/walrus_aggregator.png)
+   - **Dashboard File**: [walrus_aggregator.json](./grafana/dashboards/walrus_aggregator.json)
+     ![Walrus Aggregator Dashboard](./assets/walrus_aggregator.png)
 
-3. **Walrus Publisher Dashboard**  
+3. **Walrus Publisher Dashboard**
    - **Description**: Monitors Publisher service metrics, including HTTP request durations, error rates, and latency.
-   - **Dashboard File**: [walrus_publisher.json](./grafana/dashboards/walrus_publisher.json)  
-   ![Walrus Publisher Dashboard](./assets/walrus_publisher.png)
+   - **Dashboard File**: [walrus_publisher.json](./grafana/dashboards/walrus_publisher.json)
+     ![Walrus Publisher Dashboard](./assets/walrus_publisher.png)
 
 ---
 
@@ -146,30 +145,30 @@ Alerts are dynamically generated based on environment variables and split into i
 
 #### **Walrus Storage Node Alerts**
 
-- **Node Restarted Alert**  
-   Triggers if the node uptime hasn’t increased for 5 minutes.  
+- **Node Restarted Alert**
+  Triggers if the node uptime hasn’t increased for 5 minutes.
 
-- **Checkpoint Stuck Alert**  
-   Detects if no new checkpoints have been downloaded in the last 5 minutes.  
+- **Checkpoint Stuck Alert**
+  Detects if no new checkpoints have been downloaded in the last 5 minutes.
 
-- **Persisted Events Stuck Alert**  
-   Checks if no persisted events were recorded in 5 minutes.
+- **Persisted Events Stuck Alert**
+  Checks if no persisted events were recorded in 5 minutes.
 
 #### **Walrus Aggregator Alerts**
 
-- **High HTTP Server Errors Alert**  
-   Triggers when the server error rate (`5xx`) crosses a threshold.  
+- **High HTTP Server Errors Alert**
+  Triggers when the server error rate (`5xx`) crosses a threshold.
 
-- **High Client Error Rate Alert**  
-   Triggers when the client error rate (`4xx`) crosses a threshold. 
+- **High Client Error Rate Alert**
+  Triggers when the client error rate (`4xx`) crosses a threshold.
 
 #### **Walrus Publisher Alerts**
 
-- **High HTTP Server Errors Alert**  
-   Triggers when the server error rate (`5xx`) crosses a threshold.  
+- **High HTTP Server Errors Alert**
+  Triggers when the server error rate (`5xx`) crosses a threshold.
 
-- **High Client Error Rate Alert**  
-   Triggers when the client error rate (`4xx`) crosses a threshold.  
+- **High Client Error Rate Alert**
+  Triggers when the client error rate (`4xx`) crosses a threshold.
 
 ---
 
@@ -179,8 +178,8 @@ Alerts are dynamically generated based on environment variables and split into i
 
 Alerts are dynamically routed to the following targets based on `.env` variables:
 
-- **PagerDuty**: Integrated via `PAGERDUTY_INTEGRATION_KEY`.  
-- **Telegram**: Configured using `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`.  
+- **PagerDuty**: Integrated via `PAGERDUTY_INTEGRATION_KEY`.
+- **Telegram**: Configured using `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`.
 - **Discord**: Enabled using `DISCORD_WEBHOOK_URL`.
 - **Slack**: Enabled using `SLACK_WEBHOOK_URL`.
 
@@ -204,6 +203,12 @@ Docker's network_mode: host works differently on Linux and macOS, requiring sepa
 
 - **Linux**: Use `docker-compose.yml` for standard setup.
 - **macOS**: Use `docker-compose.macos.yml` for network_mode: host setup.
+
+---
+
+## 🏷️ **Versions**
+
+Container images (Grafana, Prometheus, Alertmanager) are pinned to explicit versions in both compose files rather than `:latest`; Dependabot proposes updates. Releases are tagged: `v1.0.0` is the state deployed on 2026-10-27, before pinning. The Walrus node Ansible role consumes these tags, so deploy from a tag rather than from `main`.
 
 ---
 

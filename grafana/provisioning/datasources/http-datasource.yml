@@ -8,5 +8,5 @@ datasources:
     basicAuth: false
     jsonData:
       source: "url"
-      tlsSkipVerify: true    
+      tlsSkipVerify: true
     uid: ctibdrobbprrc6ulkutg

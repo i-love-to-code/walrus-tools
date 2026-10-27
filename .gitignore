@@ -1,3 +1,5 @@
 .env
 .grafana.env
 .DS_Store
+.pre-commit-cache/
+docker-compose.yml.*~

@@ -1,10 +1,10 @@
 apiVersion: 1
 
 providers:
-  - name: 'walrus'
+  - name: "walrus"
     orgId: 1
-    folder: ''
-    type: 'file'
+    folder: ""
+    type: "file"
     disableDeletion: false
     editable: true
     options:

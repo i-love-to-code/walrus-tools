@@ -11,7 +11,7 @@ groups:
         annotations:
           summary: "High Client Error Rate Detected on Walrus Publisher"
           description: |
-            The rate of HTTP client errors (4xx) on the Walrus Publisher has exceeded 10 requests per second 
+            The rate of HTTP client errors (4xx) on the Walrus Publisher has exceeded 10 requests per second
             for the last 5 minutes, indicating frequent client-side request issues.
 
       - alert: WalrusPublisher_HighServerErrorRate
@@ -24,5 +24,5 @@ groups:
         annotations:
           summary: "High Server Error Rate Detected on Walrus Publisher"
           description: |
-            The rate of HTTP server errors (5xx) on the Walrus Publisher has exceeded 5 requests per second 
+            The rate of HTTP server errors (5xx) on the Walrus Publisher has exceeded 5 requests per second
             for the last 5 minutes, indicating potential backend issues or failures.
